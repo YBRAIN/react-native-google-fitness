@@ -1,0 +1,6 @@
+rootProject.name = 'example'
+
+include ':react-native-google-fitness'
+project(':react-native-google-fitness').projectDir = new File(rootProject.projectDir, '../../android')
+
+include ':app', ':react-native-google-fitness'

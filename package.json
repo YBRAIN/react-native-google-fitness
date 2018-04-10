@@ -1,0 +1,51 @@
+{
+  "name": "react-native-google-fitness",
+  "version": "0.0.1",
+  "description": "A flexible React native module for Google Fit",
+  "main": "src/index.android.js",
+  "scripts": {
+    "test": "jest",
+    "flow": "flow"
+  },
+  "keywords": [
+    "react-native",
+    "google-fit",
+    "google-fitness",
+    "Google",
+    "health",
+    "healthkit",
+    "fit",
+    "google fit",
+    "android",
+    "fitness",
+    "native",
+    "ReactNative"
+  ],
+  "author": "Sangwoo Maeng<mswokk@gmail.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ybrain/react-native-google-fitness.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ybrain/react-native-google-fitness/issues"
+  },
+  "peerDependencies": {
+    "react-native": "^0.52.0"
+  },
+  "devDependencies": {
+    "flow-bin": "^0.65.0",
+    "jest": "^22.4.3",
+    "babel-cli": "^6.26.0",
+    "babel-jest": "22.0.6",
+    "babel-plugin-transform-decorators-legacy": "^1.3.4",
+    "babel-preset-react-native": "4.0.0"
+  },
+  "jest": {
+    "verbose": true,
+    "testPathIgnorePatterns": [
+      "/node_modules/",
+      "/example/"
+    ]
+  }
+}
