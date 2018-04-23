@@ -37,13 +37,13 @@ Quite awesome, isn't it?
 ###### or Manual native library link
 1. Append the following lines to `android/settings.gradle`:
    ```
-   include ':react-native-google-fit'
-   project(':react-native-google-fit').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-google-fit/android')
+   include ':react-native-google-fitness'
+   project(':react-native-google-fitness').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-google-fitness/android')
    ```
 
 2. Insert the following lines inside the dependencies block in `android/app/build.gradle`:
    ```
-     compile project(':react-native-google-fit')
+     compile project(':react-native-google-fitness')
    ```
 
 3. Open up `android/app/src/main/java/.../MainApplication.java`
@@ -72,58 +72,8 @@ Follow steps in https://developers.google.com/fit/android/get-api-key
    with the Fit application in each smartphone where the application is installed.
 
 
-
-## COMMON USAGE
-
+## Example
 (Example application is included in this repository.)
-
-1. `import GoogleFit from 'react-native-google-fitness';`
-
-2. Authorize:
-
-    ```javascript
-    GoogleFit.onAuthorize(() => {
-      dispatch('AUTH SUCCESS');
-    });
-    
-    GoogleFit.onAuthorizeFailure(() => {
-      dispatch('AUTH ERROR');
-    });
-    
-    GoogleFit.authorize();
-    
-    // ...
-    // Call when authorized
-    GoogleFit.startRecording((callback) => {
-      // Process data from Google Fit Recording API (no google fit app needed)
-    });
-    ```
-
-3. Retrieve Steps For Period
-
-    ```javascript
-    const options = {
-      startDate: "2017-01-01T00:00:17.971Z", // required ISO8601Timestamp
-      endDate: new Date().toISOString() // required ISO8601Timestamp
-    };
-    
-    GoogleFit.getDailyStepCountSamples(options, (err, res) => {
-      if (err) {
-        throw err;
-      }
-    
-      console.log("Daily steps >>>", res);
-    });
-    ```
-
-**Response:**
-
-```javascript
-
-
-```
-
-### Changelog
 
 
 ### Changelog:
