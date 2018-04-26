@@ -1,3 +1,4 @@
+//@flow
 import Fitness, {
     DataPoint,
     DataReadRequest,
@@ -9,6 +10,7 @@ import Fitness, {
     Value,
 } from 'react-native-google-fitness';
 import {BlockStmt, LocalVariable} from 'react-native-google-fitness/src/jsoninterpreter';
+import type {DataReadResponse} from '../src/fitness/data/DataReadResponse';
 
 const TAG = 'BasicHistoryApi';
 const HOUR_MS = 1000 * 60 * 60;
@@ -76,7 +78,7 @@ export default class BasicHistoryApi {
     /**
      * Asynchronous task to read the history data. When the task succeeds, it will print out the data.
      */
-    static readHistoryData() {
+    static readHistoryData() :Promise<DataReadResponse>{
         // Begin by creating the query.
         const readRequest = BasicHistoryApi.queryFitnessData();
 

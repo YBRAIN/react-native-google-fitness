@@ -1,11 +1,12 @@
 //@flow
 import {NativeModules} from 'react-native';
 import Statement from './jsoninterpreter/statements/Statement';
+import type {DataReadResponse} from './fitness/data/DataReadResponse';
 
 type NativeGoogleFit = {
     googleSignIn: string => Promise<SignInResult>,
     history_insertData: string => Promise<void>,
-    history_readData: string => Promise<any>,
+    history_readData: string => Promise<DataReadResponse>,
     history_updateData: string => Promise<void>,
     history_deleteData: string => Promise<void>,
     history_readDailyTotal: string => Promise<any>,
@@ -37,7 +38,7 @@ const HistoryClient = {
      * @param readRequest
      * @return {Promise<any>}
      */
-    readData(readRequest: Statement): Promise<any> {
+    readData(readRequest: Statement): Promise<DataReadResponse> {
         return fitness.history_readData(readRequest.stringify());
     },
 
