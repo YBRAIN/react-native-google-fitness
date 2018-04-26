@@ -1,13 +1,3 @@
-/**
- * Copyright (c) 2017-present, Stanislav Doskalenko - doskalenko.s@gmail.com
- * All rights reserved.
- * <p>
- * This source code is licensed under the MIT-style license found in the
- * LICENSE file in the root directory of this source tree.
- * <p>
- * Based on Asim Malik's android source code, copyright (c) 2015
- **/
-
 package com.ybrain.rn.googlefitness;
 
 import com.facebook.react.ReactPackage;

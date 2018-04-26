@@ -1,3 +1,5 @@
+//@flow
+import {Alert} from 'react-native';
 import GoogleFit from '../src/index.android';
 import {BlockStmt, LocalVariable} from '../src/jsoninterpreter/index';
 import {

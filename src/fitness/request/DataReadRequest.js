@@ -1,12 +1,4 @@
-/*
- * Copyright (C) YBrain Inc - All Rights Reserved. 2017.
- * Unauthorized copying of this file, via any medium is strictly prohibited
- * Proprietary and confidential
- *
- * Created by sangwoo on 2018. 4. 10..
- * @flow
- */
-
+//@flow
 import ChainedMethodCallStmt from '../../jsoninterpreter/statements/ChainedMethodCallStmt';
 import MemberMethodCallStmt from '../../jsoninterpreter/statements/MemberMethodCallStmt';
 import ConstructorCallStmt from '../../jsoninterpreter/statements/ConstructorCallStmt';

@@ -8,6 +8,11 @@ import StaticMethodCallStmt from '../jsoninterpreter/statements/StaticMethodCall
 import StaticFieldReadStmt from '../jsoninterpreter/statements/StaticFieldReadStmt';
 import FundamentalParameter from '../jsoninterpreter/statements/FundamentalParameter';
 
+const AccessType = {
+    ACCESS_READ: 0,
+    ACCESS_WRITE: 1,
+}
+
 /**
  * Native FitnessOptions.Builder class wrapper.
  *
@@ -45,8 +50,5 @@ class FitnessOptionsBuilder {
 
 export default {
     Builder: FitnessOptionsBuilder,
-    AccessType: {
-        ACCESS_READ: 0,
-        ACCESS_WRITE: 1,
-    },
+    AccessType: AccessType,
 };
