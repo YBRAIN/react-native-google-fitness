@@ -3,6 +3,33 @@
 /**
  * DataTypes of fitness.data in Google Android APIs
  * @see https://developers.google.com/android/reference/com/google/android/gms/fitness/data/DataType
+ *
+ * - Types Support aggregate
+ * TYPE_ACTIVITY_SEGMENT
+ * TYPE_BASAL_METABOLIC_RATE
+ * TYPE_BODY_FAT_PERCENTAGE
+ * TYPE_CALORIES_CONSUMED
+ * TYPE_CALORIES_EXPENDED
+ * TYPE_DISTANCE_DELTA
+ * TYPE_NUTRITION
+ * TYPE_HYDRATION
+ * TYPE_HEART_RATE_BPM
+ * TYPE_POWER_SAMPLE
+ * TYPE_SPEED
+ * TYPE_STEP_COUNT_DELTA
+ * TYPE_WEIGHT
+ * TYPE_LOCATION_SAMPLE : DataType.AGGREGATE_LOCATION_BOUNDING_BOX
+ * (Health data types)
+ * TYPE_BLOOD_PRESSURE
+ * TYPE_BLOOD_GLUCOSE
+ * TYPE_OXYGEN_SATURATION
+ * TYPE_BODY_TEMPERATURE
+ * TYPE_BASAL_BODY_TEMPERATURE
+ * TYPE_CERVICAL_MUCUS,  : HealthDataTypes.TYPE_CERVICAL_MUCUS
+ * TYPE_CERVICAL_POSITION,  : HealthDataTypes.TYPE_CERVICAL_POSITION
+ * TYPE_MENSTRUATION,  : HealthDataTypes.TYPE_MENSTRUATION
+ * TYPE_OVULATION_TEST,  : HealthDataTypes.TYPE_OVULATION_TEST
+ * TYPE_VAGINAL_SPOTTING,  : HealthDataTypes.TYPE_VAGINAL_SPOTTING
  */
 export default {
     className: 'com.google.android.gms.fitness.data.DataType',
