@@ -163,7 +163,7 @@ class DataReadRequestBuilder {
     read_dataType(dataType: $Values<typeof DataType>): DataReadRequestBuilder {
         this.chainedStmt.appendMethodCall(new MemberMethodCallStmt(null,
             'read', [
-                new FundamentalParameter(DataType.className, dataType),
+                new Parameter(DataType.className, new StaticFieldReadStmt(DataType.className, dataType)),
             ]));
         return this;
     }
