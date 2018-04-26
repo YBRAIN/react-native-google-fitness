@@ -69,7 +69,7 @@ public class JSONEncoder {
             jsonBucket.putString("end", dateFormat.format(bucket.getEndTime(TimeUnit.MILLISECONDS)));
             jsonBucket.putInt("type", bucket.getBucketType());
             jsonBucket.putString("activity", bucket.getActivity());
-            jsonBucket.putArray("datasets", convertDataSets(bucket.getDataSets()));
+            jsonBucket.putArray("dataSets", convertDataSets(bucket.getDataSets()));
             jsonBuckets.pushMap(jsonBucket);
         }
         return jsonBuckets;
