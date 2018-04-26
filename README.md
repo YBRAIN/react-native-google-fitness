@@ -75,6 +75,23 @@ Follow steps in https://developers.google.com/fit/android/get-api-key
 ## Example
 (Example application is included in this repository.)
 
+#### To run example
+Because Metro-bundler of React-native doesn't support symbolic link dependency,
+you need workaround as following.
+(See details in https://medium.com/@andrewdurber/using-react-native-with-symbolic-links-89a8f42a6563)
+
+1. Link library root to global
+`react-native-activity-tracker$ npm link`
+
+2. Install node_modules of example
+`react-native-activity-tracker/example$ npm install`
+
+3. Link global library
+`react-native-activity-tracker/example$ npm link react-native-activity-tracker`
+
+4. Now you can start RN node server
+`npm start`
+
 
 ### Changelog:
 
