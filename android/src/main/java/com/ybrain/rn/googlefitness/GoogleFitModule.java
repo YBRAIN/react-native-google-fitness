@@ -93,6 +93,14 @@ public class GoogleFitModule extends ReactContextBaseJavaModule implements Lifec
     }
 
     @ReactMethod
+    public void disconnect(Promise promise) {
+        Fitness.getConfigClient(mReactContext, GoogleSignIn.getLastSignedInAccount(mReactContext))
+                .disableFit()
+                .addOnFailureListener(new SimpleFailureListener(promise))
+                .addOnCompleteListener(new VoidCompleteListener(promise));
+    }
+
+    @ReactMethod
     public void isEnabled(Promise promise) {
         if (GoogleSignIn.getLastSignedInAccount(mReactContext) != null) {
             promise.resolve(null);

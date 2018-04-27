@@ -5,6 +5,7 @@ import type {DataReadResponse} from './fitness/data/DataReadResponse';
 
 type NativeGoogleFit = {
     googleSignIn: string => Promise<SignInResult>,
+    disconnect: void => Promise<void>,
     history_insertData: string => Promise<void>,
     history_readData: string => Promise<DataReadResponse>,
     history_updateData: string => Promise<void>,
@@ -79,8 +80,16 @@ export default {
      * @param fitnessOptions Permission options to request. Build using FitnessOptions
      * @returns {Promise<SignInResult>}
      */
-    async authorize(fitnessOptions: Statement): SignInResult {
+    authorize(fitnessOptions: Statement): Promise<SignInResult> {
         return fitness.googleSignIn(fitnessOptions.stringify());
+    },
+
+    /**
+     * Disconnect google sign in
+     * @return {Promise<void>}
+     */
+    disconnect(): Promise<void> {
+        return fitness.disconnect();
     },
 
     History: HistoryClient,
