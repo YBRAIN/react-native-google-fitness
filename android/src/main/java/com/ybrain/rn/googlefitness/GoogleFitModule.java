@@ -143,15 +143,19 @@ public class GoogleFitModule extends ReactContextBaseJavaModule implements Lifec
                     .addOnCompleteListener(new OnCompleteListener<DataReadResponse>() {
                         @Override
                         public void onComplete(@NonNull Task<DataReadResponse> task) {
-                            DataReadResponse result = task.getResult();
-                            WritableNativeArray dataSets = JSONEncoder.convertDataSets(result.getDataSets());
-                            WritableNativeArray buckets = JSONEncoder.convertBuckets(result.getBuckets());
+                            try {
+                                DataReadResponse result = task.getResult();
+                                WritableNativeArray dataSets = JSONEncoder.convertDataSets(result.getDataSets());
+                                WritableNativeArray buckets = JSONEncoder.convertBuckets(result.getBuckets());
 
-                            WritableNativeMap map = new WritableNativeMap();
-                            map.putString("status", result.getStatus().toString());
-                            map.putArray("dataSets", dataSets);
-                            map.putArray("buckets", buckets);
-                            promise.resolve(map);
+                                WritableNativeMap map = new WritableNativeMap();
+                                map.putString("status", result.getStatus().toString());
+                                map.putArray("dataSets", dataSets);
+                                map.putArray("buckets", buckets);
+                                promise.resolve(map);
+                            } catch (Exception e) {
+                                promise.reject(e);
+                            }
                         }
                     });
         } catch (Exception e) {
