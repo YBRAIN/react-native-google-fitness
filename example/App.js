@@ -5,20 +5,27 @@ import GoogleFit, {DataType, FitnessOptions} from 'react-native-google-fitness';
 import BasicHistoryApi from './BasicHistoryApi';
 
 export default class App extends Component<{}> {
-    /*
-     * Example in https://developers.google.com/fit/android/get-started#step_5_connect_to_the_fitness_service
-     */
-    onAuth = async () => {
-        const authState = await GoogleFit.authorize(new FitnessOptions.Builder()
+
+    createFitnessOptions() {
+        return new FitnessOptions.Builder()
             .addDataType(DataType.TYPE_STEP_COUNT_DELTA, FitnessOptions.AccessType.ACCESS_READ)
             .addDataType(DataType.AGGREGATE_STEP_COUNT_DELTA, FitnessOptions.AccessType.ACCESS_READ)
-            .build(),
-        );
+            .build();
+    }
 
-        Alert.alert('Result', authState,
-            [{text: 'OK', onPress: () => console.log('OK Pressed')}],
-            {cancelable: true},
-        );
+    onRequestPermissions = async () => {
+        const result = await GoogleFit.requestPermissions(this.createFitnessOptions());
+        this.showAlert(result);
+    };
+
+    onDisconnect = async () => {
+        await GoogleFit.disconnect();
+        this.showAlert('Disconnected');
+    };
+
+    onHasPermissions = async () => {
+        const result = await GoogleFit.hasPermissions(this.createFitnessOptions());
+        this.showAlert(result.toString());
     };
 
     onInsert = async () => {
@@ -43,8 +50,18 @@ export default class App extends Component<{}> {
         return (
             <View style={styles.container}>
                 <Button
-                    title="Authenticate"
-                    onPress={this.onAuth}
+                    title="Request Permissions"
+                    onPress={this.onRequestPermissions}
+                />
+
+                <Button
+                    title="Disconnect"
+                    onPress={this.onDisconnect}
+                />
+
+                <Button
+                    title="Has permissions"
+                    onPress={this.onHasPermissions}
                 />
 
                 <Button
@@ -61,6 +78,7 @@ export default class App extends Component<{}> {
                     disabled
                     title="Update data"
                     onPress={() => {
+                        // TODO
                     }}
                 />
 
@@ -68,6 +86,7 @@ export default class App extends Component<{}> {
                     disabled
                     title="Delete data"
                     onPress={() => {
+                        // TODO
                     }}
                 />
 

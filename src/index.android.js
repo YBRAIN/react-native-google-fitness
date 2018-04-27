@@ -4,7 +4,8 @@ import Statement from './jsoninterpreter/statements/Statement';
 import type {DataReadResponse} from './fitness/data/DataReadResponse';
 
 type NativeGoogleFit = {
-    googleSignIn: string => Promise<SignInResult>,
+    requestPermissions: string => Promise<SignInResult>,
+    hasPermissions: string => Promise<boolean>,
     disconnect: void => Promise<void>,
     history_insertData: string => Promise<void>,
     history_readData: string => Promise<DataReadResponse>,
@@ -80,8 +81,12 @@ export default {
      * @param fitnessOptions Permission options to request. Build using FitnessOptions
      * @returns {Promise<SignInResult>}
      */
-    authorize(fitnessOptions: Statement): Promise<SignInResult> {
-        return fitness.googleSignIn(fitnessOptions.stringify());
+    requestPermissions(fitnessOptions: Statement): Promise<SignInResult> {
+        return fitness.requestPermissions(fitnessOptions.stringify());
+    },
+
+    hasPermissions(fitnessOptions: Statement): Promise<boolean> {
+        return fitness.hasPermissions(fitnessOptions.stringify());
     },
 
     /**

@@ -22,10 +22,8 @@ import com.google.android.gms.fitness.request.DataDeleteRequest;
 import com.google.android.gms.fitness.request.DataReadRequest;
 import com.google.android.gms.fitness.request.DataUpdateRequest;
 import com.google.android.gms.fitness.result.DataReadResponse;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.ybrain.jsoninterpreter.StatementFactory;
 import com.ybrain.jsoninterpreter.statements.JavaContext;
 
@@ -66,7 +64,7 @@ public class GoogleFitModule extends ReactContextBaseJavaModule implements Lifec
     }
 
     @ReactMethod
-    public void googleSignIn(String fitnessOptionJsonStr, final Promise promise) {
+    public void requestPermissions(String fitnessOptionJsonStr, final Promise promise) {
         FitnessOptions fitnessOptions = null;
         try {
             fitnessOptions = (FitnessOptions) StatementFactory
@@ -93,20 +91,24 @@ public class GoogleFitModule extends ReactContextBaseJavaModule implements Lifec
     }
 
     @ReactMethod
-    public void disconnect(Promise promise) {
-        Fitness.getConfigClient(mReactContext, GoogleSignIn.getLastSignedInAccount(mReactContext))
-                .disableFit()
-                .addOnFailureListener(new SimpleFailureListener(promise))
-                .addOnCompleteListener(new VoidCompleteListener(promise));
+    public void hasPermissions(String fitnessOptionJsonStr, Promise promise) {
+        try {
+            FitnessOptions fitnessOptions = (FitnessOptions) StatementFactory
+                    .fromJson(fitnessOptionJsonStr)
+                    .execute(new JavaContext(), null);
+            promise.resolve(GoogleSignIn.hasPermissions(GoogleSignIn.getLastSignedInAccount(mReactContext), fitnessOptions));
+        } catch (Exception e) {
+            Log.e(TAG, "Failed to create FitnessOptions", e);
+            promise.reject(e);
+        }
     }
 
     @ReactMethod
-    public void isEnabled(Promise promise) {
-        if (GoogleSignIn.getLastSignedInAccount(mReactContext) != null) {
-            promise.resolve(null);
-        } else {
-            promise.reject(new Exception("Not authorized"));
-        }
+    public void disableFit(Promise promise) {
+        Fitness.getConfigClient(mReactContext, GoogleSignIn.getLastSignedInAccount(mReactContext))
+                .disableFit()
+                .addOnFailureListener(new SimpleFailureListener(promise))
+                .addOnSuccessListener(new SimpleSuccessListener(promise));
     }
 
     private HistoryClient getHistoryClient() {
@@ -123,7 +125,7 @@ public class GoogleFitModule extends ReactContextBaseJavaModule implements Lifec
             getHistoryClient()
                     .insertData(dataSet)
                     .addOnFailureListener(new SimpleFailureListener(promise))
-                    .addOnCompleteListener(new VoidCompleteListener(promise));
+                    .addOnSuccessListener(new SimpleSuccessListener(promise));
         } catch (Exception e) {
             Log.e(TAG, "Error in history_insertData()", e);
             promise.reject(e);
@@ -140,22 +142,17 @@ public class GoogleFitModule extends ReactContextBaseJavaModule implements Lifec
             getHistoryClient()
                     .readData(dataReadRequest)
                     .addOnFailureListener(new SimpleFailureListener(promise))
-                    .addOnCompleteListener(new OnCompleteListener<DataReadResponse>() {
+                    .addOnSuccessListener(new OnSuccessListener<DataReadResponse>() {
                         @Override
-                        public void onComplete(@NonNull Task<DataReadResponse> task) {
-                            try {
-                                DataReadResponse result = task.getResult();
-                                WritableNativeArray dataSets = JSONEncoder.convertDataSets(result.getDataSets());
-                                WritableNativeArray buckets = JSONEncoder.convertBuckets(result.getBuckets());
+                        public void onSuccess(DataReadResponse result) {
+                            WritableNativeArray dataSets = JSONEncoder.convertDataSets(result.getDataSets());
+                            WritableNativeArray buckets = JSONEncoder.convertBuckets(result.getBuckets());
 
-                                WritableNativeMap map = new WritableNativeMap();
-                                map.putString("status", result.getStatus().toString());
-                                map.putArray("dataSets", dataSets);
-                                map.putArray("buckets", buckets);
-                                promise.resolve(map);
-                            } catch (Exception e) {
-                                promise.reject(e);
-                            }
+                            WritableNativeMap map = new WritableNativeMap();
+                            map.putString("status", result.getStatus().toString());
+                            map.putArray("dataSets", dataSets);
+                            map.putArray("buckets", buckets);
+                            promise.resolve(map);
                         }
                     });
         } catch (Exception e) {
@@ -173,7 +170,7 @@ public class GoogleFitModule extends ReactContextBaseJavaModule implements Lifec
             getHistoryClient()
                     .updateData(updateRequest)
                     .addOnFailureListener(new SimpleFailureListener(promise))
-                    .addOnCompleteListener(new VoidCompleteListener(promise));
+                    .addOnSuccessListener(new SimpleSuccessListener(promise));
         } catch (Exception e) {
             Log.e(TAG, "Error in history_updateData()", e);
             promise.reject(e);
@@ -189,7 +186,7 @@ public class GoogleFitModule extends ReactContextBaseJavaModule implements Lifec
             getHistoryClient()
                     .deleteData(deleteRequest)
                     .addOnFailureListener(new SimpleFailureListener(promise))
-                    .addOnCompleteListener(new VoidCompleteListener(promise));
+                    .addOnSuccessListener(new SimpleSuccessListener(promise));
         } catch (Exception e) {
             Log.e(TAG, "Error in history_deleteData()", e);
             promise.reject(e);
@@ -255,15 +252,15 @@ public class GoogleFitModule extends ReactContextBaseJavaModule implements Lifec
         }
     }
 
-    private static final class VoidCompleteListener implements OnCompleteListener<Void> {
+    private static class SimpleSuccessListener implements OnSuccessListener {
         private Promise mPromise;
 
-        public VoidCompleteListener(Promise promise) {
+        public SimpleSuccessListener(Promise promise) {
             mPromise = promise;
         }
 
         @Override
-        public void onComplete(@NonNull Task task) {
+        public void onSuccess(Object o) {
             mPromise.resolve(null);
         }
     }

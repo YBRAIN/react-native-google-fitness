@@ -8,7 +8,6 @@ import com.facebook.react.bridge.ReactContext;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.fitness.FitnessOptions;
-import com.google.android.gms.fitness.data.DataType;
 
 public class GoogleSignInManager implements ActivityEventListener {
     private static final String TAG = "RNGoogleFit";
@@ -24,11 +23,12 @@ public class GoogleSignInManager implements ActivityEventListener {
 
     /**
      * Request GoogleFit API via GoogleSignIn
+     *
      * @param activity
      * @param listener
      * @return false if already signed in
      */
-    public boolean requestPermissions(Activity activity,  FitnessOptions fitnessOptions, ResultListener listener) {
+    public boolean requestPermissions(Activity activity, FitnessOptions fitnessOptions, ResultListener listener) {
         mListener = listener;
 
         GoogleSignInAccount lastSignedInAccount = GoogleSignIn.getLastSignedInAccount(mReactContext);
@@ -50,13 +50,13 @@ public class GoogleSignInManager implements ActivityEventListener {
     @Override
     public void onActivityResult(Activity activity, int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_OAUTH_REQUEST_CODE) {
-            if(mListener !=null){
+            if (mListener != null) {
                 mListener.onResult(resultCode);
             }
         }
     }
 
-    public static interface ResultListener {
+    public interface ResultListener {
         void onResult(int resultCode);
     }
 }
