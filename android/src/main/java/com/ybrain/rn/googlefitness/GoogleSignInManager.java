@@ -7,6 +7,8 @@ import com.facebook.react.bridge.ActivityEventListener;
 import com.facebook.react.bridge.ReactContext;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInApi;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.fitness.FitnessOptions;
 
 public class GoogleSignInManager implements ActivityEventListener {

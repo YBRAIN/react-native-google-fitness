@@ -15,11 +15,11 @@ export default class App extends Component<{}> {
 
     onRequestPermissions = async () => {
         const result = await GoogleFit.requestPermissions(this.createFitnessOptions());
-        this.showAlert(result);
+        setTimeout(() => this.showAlert(result), 1000); // Wait for native GoogleSignIn dialog disappear
     };
 
     onDisconnect = async () => {
-        await GoogleFit.disconnect();
+        await GoogleFit.disableFit();
         this.showAlert('Disconnected');
     };
 
