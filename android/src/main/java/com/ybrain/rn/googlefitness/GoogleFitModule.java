@@ -13,6 +13,7 @@ import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.WritableNativeArray;
 import com.facebook.react.bridge.WritableNativeMap;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.fitness.Fitness;
 import com.google.android.gms.fitness.FitnessOptions;
 import com.google.android.gms.fitness.HistoryClient;
@@ -92,11 +93,16 @@ public class GoogleFitModule extends ReactContextBaseJavaModule implements Lifec
 
     @ReactMethod
     public void hasPermissions(String fitnessOptionJsonStr, Promise promise) {
+        if (GoogleSignIn.getLastSignedInAccount(mReactContext) == null) {
+            promise.resolve(false);
+            return;
+        }
+
         try {
             FitnessOptions fitnessOptions = (FitnessOptions) StatementFactory
                     .fromJson(fitnessOptionJsonStr)
                     .execute(new JavaContext(), null);
-            promise.resolve(GoogleSignIn.hasPermissions(GoogleSignIn.getLastSignedInAccount(mReactContext), fitnessOptions));
+            promise.resolve(GoogleSignIn.hasPermissions(getLastSignedInAccountSafely(), fitnessOptions));
         } catch (Exception e) {
             Log.e(TAG, "Failed to create FitnessOptions", e);
             promise.reject(e);
@@ -105,15 +111,26 @@ public class GoogleFitModule extends ReactContextBaseJavaModule implements Lifec
 
     @ReactMethod
     public void disableFit(Promise promise) {
-        Fitness.getConfigClient(mReactContext, GoogleSignIn.getLastSignedInAccount(mReactContext))
-                .disableFit()
-                .addOnFailureListener(new SimpleFailureListener(promise))
-                .addOnSuccessListener(new SimpleSuccessListener(promise));
+        try {
+            Fitness.getConfigClient(mReactContext, getLastSignedInAccountSafely())
+                    .disableFit()
+                    .addOnFailureListener(new SimpleFailureListener(promise))
+                    .addOnSuccessListener(new SimpleSuccessListener(promise));
+        } catch (Exception e) {
+            promise.reject(e);
+        }
     }
 
     private HistoryClient getHistoryClient() {
-        return Fitness.getHistoryClient(mReactContext,
-                GoogleSignIn.getLastSignedInAccount(mReactContext));
+        return Fitness.getHistoryClient(mReactContext, getLastSignedInAccountSafely());
+    }
+
+    private GoogleSignInAccount getLastSignedInAccountSafely() {
+        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(mReactContext);
+        if (account == null) {
+            throw new NullPointerException("No signed in google account. GoogleSignIn.getLastSignedInAccount() returned null.");
+        }
+        return account;
     }
 
     @ReactMethod
