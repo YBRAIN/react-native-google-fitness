@@ -14,6 +14,7 @@ import com.facebook.react.bridge.WritableNativeArray;
 import com.facebook.react.bridge.WritableNativeMap;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.fitness.Fitness;
 import com.google.android.gms.fitness.FitnessOptions;
 import com.google.android.gms.fitness.HistoryClient;
@@ -23,8 +24,10 @@ import com.google.android.gms.fitness.request.DataDeleteRequest;
 import com.google.android.gms.fitness.request.DataReadRequest;
 import com.google.android.gms.fitness.request.DataUpdateRequest;
 import com.google.android.gms.fitness.result.DataReadResponse;
+import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.ybrain.jsoninterpreter.StatementFactory;
 import com.ybrain.jsoninterpreter.statements.JavaContext;
 
@@ -112,8 +115,18 @@ public class GoogleFitModule extends ReactContextBaseJavaModule implements Lifec
     @ReactMethod
     public void disableFit(Promise promise) {
         try {
-            Fitness.getConfigClient(mReactContext, getLastSignedInAccountSafely())
+            Fitness
+                    .getConfigClient(mReactContext, getLastSignedInAccountSafely())
                     .disableFit()
+                    .continueWithTask(new Continuation<Void, Task<Void>>() {
+                        @Override
+                        public Task<Void> then(@NonNull Task<Void> task) throws Exception {
+                            GoogleSignInOptions options = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).build();
+                            return GoogleSignIn
+                                    .getClient(mReactContext, options)
+                                    .signOut();
+                        }
+                    })
                     .addOnFailureListener(new SimpleFailureListener(promise))
                     .addOnSuccessListener(new SimpleSuccessListener(promise));
         } catch (Exception e) {
