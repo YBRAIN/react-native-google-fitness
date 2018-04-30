@@ -8,7 +8,7 @@ export default class App extends Component<{}> {
 
     createFitnessOptions() {
         return new FitnessOptions.Builder()
-            .addDataType(DataType.TYPE_STEP_COUNT_DELTA, FitnessOptions.AccessType.ACCESS_READ)
+            .addDataType(DataType.TYPE_STEP_COUNT_DELTA, FitnessOptions.AccessType.ACCESS_WRITE)
             .addDataType(DataType.AGGREGATE_STEP_COUNT_DELTA, FitnessOptions.AccessType.ACCESS_READ)
             .build();
     }
