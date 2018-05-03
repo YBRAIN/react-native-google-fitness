@@ -3,20 +3,20 @@ A flexible React Native module for Google Fit
 
 ##### Why is it flexible?
 For example, you can query history data using Builder-Pattern of DataReadRequest like Android native way!~
-```
-        const HOUR_MS = 1000 * 60 * 60;
+```javascript
+const HOUR_MS = 1000 * 60 * 60;
 
-        // Setting a start and end date using a range of 1 week before this moment.
-        const endTime = Date.now();
-        const startTime = endTime - HOUR_MS * 24 * 7;
+// Setting a start and end date using a range of 1 week before this moment.
+const endTime = Date.now();
+const startTime = endTime - HOUR_MS * 24 * 7;
 
-        const readRequest = new DataReadRequest.Builder()
-            .aggregate_dataType(DataType.TYPE_STEP_COUNT_DELTA, DataType.AGGREGATE_STEP_COUNT_DELTA)
-            .bucketByTime(1, TimeUnit.DAYS)
-            .setTimeRange(startTime, endTime, TimeUnit.MILLISECONDS)
-            .build();
+const readRequest = new DataReadRequest.Builder()
+    .aggregate_dataType(DataType.TYPE_STEP_COUNT_DELTA, DataType.AGGREGATE_STEP_COUNT_DELTA)
+    .bucketByTime(1, TimeUnit.DAYS)
+    .setTimeRange(startTime, endTime, TimeUnit.MILLISECONDS)
+    .build();
 
-        const result = await Fitness.History.readData(readRequest);
+const result = await Fitness.History.readData(readRequest);
 ```
 
 Quite awesome, isn't it?
@@ -36,15 +36,15 @@ Quite awesome, isn't it?
 
 ###### or Manual native library link
 1. Append the following lines to `android/settings.gradle`:
-   ```
-   include ':react-native-google-fitness'
-   project(':react-native-google-fitness').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-google-fitness/android')
-   ```
+    ```groovy
+    include ':react-native-google-fitness'
+    project(':react-native-google-fitness').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-google-fitness/android')
+    ```
 
 2. Insert the following lines inside the dependencies block in `android/app/build.gradle`:
-   ```
-     compile project(':react-native-google-fitness')
-   ```
+    ```groovy
+    compile project(':react-native-google-fitness')
+    ```
 
 3. Open up `android/app/src/main/java/.../MainApplication.java`
     * Add `import com.ybrain.rn.GoogleFitnessPackage;` to the imports at the top of the file
@@ -72,24 +72,24 @@ Follow steps in https://developers.google.com/fit/android/get-api-key
    with the Fit application in each smartphone where the application is installed.
 
 
-## Example
-(Example application is included in this repository.)
+## Example application
+> Example application is included in this repository.
 
 #### To run example
 Because Metro-bundler of React-native doesn't support symbolic link dependency,
 you need workaround as following.
 (See details in https://medium.com/@andrewdurber/using-react-native-with-symbolic-links-89a8f42a6563)
 
-1. Link library root to global
+1. Link library root to global  
 `react-native-activity-tracker$ npm link`
 
-2. Install node_modules of example
+2. Install node_modules of example  
 `react-native-activity-tracker/example$ npm install`
 
-3. Link global library
+3. Link global library  
 `react-native-activity-tracker/example$ npm link react-native-activity-tracker`
 
-4. Now you can start RN node server
+4. Now you can start RN node server  
 `npm start`
 
 
