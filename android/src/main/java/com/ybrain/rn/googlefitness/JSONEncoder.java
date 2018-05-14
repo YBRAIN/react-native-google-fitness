@@ -17,7 +17,7 @@ import java.util.concurrent.TimeUnit;
  * Convert given types to JSON
  */
 public class JSONEncoder {
-    private static final String DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ssXXX"; // ISO8601 FORMAT
+    private static final String DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ssZZZZZ"; // ISO8601 FORMAT
     private static final SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
 
     public static WritableNativeArray convertDataSet(DataSet dataSet) {
