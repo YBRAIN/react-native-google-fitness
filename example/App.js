@@ -1,10 +1,21 @@
 //@flow
 import React, {Component} from 'react';
 import {Alert, Button, StyleSheet, View} from 'react-native';
-import GoogleFit, {DataType, FitnessOptions} from 'react-native-google-fitness';
+import GoogleFit, {ConnectionResult, DataType, FitnessOptions} from 'react-native-google-fitness';
 import BasicHistoryApi from './BasicHistoryApi';
 
 export default class App extends Component<{}> {
+    componentDidMount() {
+        this.init();
+    }
+
+    async init() {
+        const result = await GoogleFit.isGooglePlayServicesAvailable();
+        console.log('Check google play service available : ' + result);
+        if (result !== ConnectionResult.SUCCESS) {
+            GoogleFit.showGooglePlayServiceErrorDialog(result);
+        }
+    }
 
     createFitnessOptions() {
         return new FitnessOptions.Builder()

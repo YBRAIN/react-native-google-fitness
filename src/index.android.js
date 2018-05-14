@@ -4,6 +4,8 @@ import Statement from './jsoninterpreter/statements/Statement';
 import type {DataReadResponse} from './fitness/data/DataReadResponse';
 
 type NativeGoogleFit = {
+    isGooglePlayServicesAvailable: void => Promise<$Values<ConnectionResult>>,
+    showGooglePlayServiceErrorDialog: ConnectionResult => void,
     requestPermissions: string => Promise<SignInResult>,
     hasPermissions: string => Promise<boolean>,
     disableFit: void => Promise<void>,
@@ -16,6 +18,18 @@ type NativeGoogleFit = {
 }
 
 const fitness: NativeGoogleFit = NativeModules.RNGoogleFit;
+
+/**
+ * Check result constants for GoogleFit service availability
+ */
+export const ConnectionResult = {
+    SUCCESS: 0,
+    SERVICE_MISSING: 1,
+    SERVICE_UPDATING: 18,
+    SERVICE_VERSION_UPDATE_REQUIRED: 2,
+    SERVICE_DISABLED: 3,
+    SERVICE_INVALID: 9,
+};
 
 export type SignInResult =
     'SUCCESS'
@@ -75,6 +89,14 @@ const HistoryClient = {
  * Entry point of module
  */
 export default {
+    isGooglePlayServicesAvailable(): Promise<$Values<ConnectionResult>> {
+        return fitness.isGooglePlayServicesAvailable();
+    },
+
+    showGooglePlayServiceErrorDialog(status: ConnectionResult) {
+        fitness.showGooglePlayServiceErrorDialog(status);
+    },
+
     /**
      * Request Google-fit permission for this application
      *

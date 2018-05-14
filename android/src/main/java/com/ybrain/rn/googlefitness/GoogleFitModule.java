@@ -15,6 +15,7 @@ import com.facebook.react.bridge.WritableNativeMap;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.fitness.Fitness;
 import com.google.android.gms.fitness.FitnessOptions;
 import com.google.android.gms.fitness.HistoryClient;
@@ -65,6 +66,17 @@ public class GoogleFitModule extends ReactContextBaseJavaModule implements Lifec
 
     @Override
     public void onHostDestroy() {
+    }
+
+    @ReactMethod
+    public void isGooglePlayServicesAvailable(final Promise promise) {
+        promise.resolve(GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(getReactApplicationContext()));
+    }
+
+    @ReactMethod
+    public void showGooglePlayServiceErrorDialog(int status, final Promise promise) {
+        GoogleApiAvailability.getInstance().getErrorDialog(getCurrentActivity(), status, 0).show();
+        promise.resolve(null);
     }
 
     @ReactMethod
