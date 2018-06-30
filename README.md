@@ -34,6 +34,8 @@ Quite awesome, isn't it?
 ###### Automatic native library link
 `$ react-native link react-native-google-fitness`
 
+If you use automatic linking check that `BuildConfig.APPLICATION_ID` has been passed to the `new GoogleFitPackage(BuildConfig.APPLICATION_ID)` call in the MainApplication.java
+
 ###### or Manual native library link
 1. Append the following lines to `android/settings.gradle`:
     ```groovy
@@ -48,7 +50,7 @@ Quite awesome, isn't it?
 
 3. Open up `android/app/src/main/java/.../MainApplication.java`
     * Add `import com.ybrain.rn.GoogleFitnessPackage;` to the imports at the top of the file
-    * Add `new GoogleFitnessPackage(),` to the list returned by the `getPackages()` method.
+    * Add `new GoogleFitPackage(BuildConfig.APPLICATION_ID),` to the list returned by the `getPackages()` method.
 
 ### Android SDK setup
 In order to build Android source code, you'll need following SDK setups
