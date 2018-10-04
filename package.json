@@ -1,6 +1,6 @@
 {
   "name": "react-native-google-fitness",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "A flexible React native module for Google Fit",
   "main": "src/index.android.js",
   "scripts": {
