@@ -5,7 +5,7 @@ import type {DataReadResponse} from './fitness/data/DataReadResponse';
 
 type NativeGoogleFit = {
     isGooglePlayServicesAvailable: void => Promise<$Values<ConnectionResult>>,
-    showGooglePlayServiceErrorDialog: ConnectionResult => void,
+    showGooglePlayServiceErrorDialog: ConnectionResult => Promise<boolean>,
     requestPermissions: string => Promise<SignInResult>,
     hasPermissions: string => Promise<boolean>,
     disableFit: void => Promise<void>,
@@ -93,8 +93,8 @@ export default {
         return fitness.isGooglePlayServicesAvailable();
     },
 
-    showGooglePlayServiceErrorDialog(status: ConnectionResult) {
-        fitness.showGooglePlayServiceErrorDialog(status);
+    showGooglePlayServiceErrorDialog(status: ConnectionResult): Promise<boolean> {
+        return fitness.showGooglePlayServiceErrorDialog(status);
     },
 
     /**

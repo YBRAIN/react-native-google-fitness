@@ -1,6 +1,7 @@
 package com.ybrain.rn.googlefitness;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
@@ -75,8 +76,13 @@ public class GoogleFitModule extends ReactContextBaseJavaModule implements Lifec
 
     @ReactMethod
     public void showGooglePlayServiceErrorDialog(int status, final Promise promise) {
-        GoogleApiAvailability.getInstance().getErrorDialog(getCurrentActivity(), status, 0).show();
-        promise.resolve(null);
+        Dialog dialog = GoogleApiAvailability.getInstance().getErrorDialog(getCurrentActivity(), status, 0);
+        if (dialog != null) {
+            dialog.show();
+            promise.resolve(true);
+        } else {
+            promise.resolve(false);
+        }
     }
 
     @ReactMethod
