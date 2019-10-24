@@ -23,7 +23,7 @@ export type DataSet_ = DataPoint_[];
 
 export type Bucket_ = {
     start: number,
-    end: number
+    end: number,
     type: number,
     activity: string;
     dataSets: DataSet_[];
