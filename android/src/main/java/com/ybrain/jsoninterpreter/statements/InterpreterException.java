@@ -11,8 +11,7 @@ public class InterpreterException extends RuntimeException {
 
     public InterpreterException(JavaContext context, String message, Throwable cause) {
         super(message + "\n"
-             //   + "Statement : " + context.getCurrentStatement() + "\n"
-                + "Callstack : \n"
+                + "JSON Callstack : \n"
                 + context.getInterpreterCallStack(), cause);
     }
 }

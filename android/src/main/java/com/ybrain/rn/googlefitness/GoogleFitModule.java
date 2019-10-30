@@ -169,7 +169,7 @@ public class GoogleFitModule extends ReactContextBaseJavaModule implements Lifec
               .addOnSuccessListener(new SimpleSuccessListener(promise));
         } catch (Exception e) {
             Log.e(TAG, "Error in history_insertData()", e);
-            promise.reject(e);
+            rejectWithException(promise, e);
         }
     }
 
@@ -198,7 +198,7 @@ public class GoogleFitModule extends ReactContextBaseJavaModule implements Lifec
               });
         } catch (Exception e) {
             Log.e(TAG, "Error in history_readData()", e);
-            promise.reject(e);
+            rejectWithException(promise, e);
         }
     }
 
@@ -214,7 +214,7 @@ public class GoogleFitModule extends ReactContextBaseJavaModule implements Lifec
               .addOnSuccessListener(new SimpleSuccessListener(promise));
         } catch (Exception e) {
             Log.e(TAG, "Error in history_updateData()", e);
-            promise.reject(e);
+            rejectWithException(promise, e);
         }
     }
 
@@ -230,7 +230,7 @@ public class GoogleFitModule extends ReactContextBaseJavaModule implements Lifec
               .addOnSuccessListener(new SimpleSuccessListener(promise));
         } catch (Exception e) {
             Log.e(TAG, "Error in history_deleteData()", e);
-            promise.reject(e);
+            rejectWithException(promise, e);
         }
     }
 
@@ -253,7 +253,7 @@ public class GoogleFitModule extends ReactContextBaseJavaModule implements Lifec
 
         } catch (Exception e) {
             Log.e(TAG, "Error in history_readDailyTotal()", e);
-            promise.reject(e);
+            rejectWithException(promise, e);
         }
     }
 
@@ -276,8 +276,28 @@ public class GoogleFitModule extends ReactContextBaseJavaModule implements Lifec
 
         } catch (Exception e) {
             Log.e(TAG, "Error in history_readDailyTotal()", e);
-            promise.reject(e);
+            rejectWithException(promise, e);
         }
+    }
+
+    private void rejectWithException(Promise promise, Exception e) {
+        Throwable t = e.getCause();
+        if (t != null) {
+            t = t.getCause();
+        }
+        Log.e(TAG, "Error in history_readData()", e);
+        promise.reject(new Exception(e.getMessage() + "\n"
+          + "Original exception:" + t.toString() + "\n"
+          + stacktraceToString(t.getStackTrace())
+        ));
+    }
+
+    private String stacktraceToString(StackTraceElement[] stackTrace) {
+        StringBuffer buf = new StringBuffer(500);
+        for (StackTraceElement element : stackTrace) {
+            buf.append(element.toString() + "\n");
+        }
+        return buf.toString();
     }
 
     private static class SimpleFailureListener implements OnFailureListener {
